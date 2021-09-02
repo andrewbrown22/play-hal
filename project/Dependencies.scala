@@ -28,8 +28,9 @@ object Dependencies {
   val test: Seq[ModuleID] =
     PlayCrossCompilation.dependencies(
       shared = Seq(
-        "org.scalatest"  %% "scalatest"     % "3.0.5"  % Test,
-        "org.pegdown" % "pegdown" % "1.6.0" % Test
+        "org.scalatest"  %% "scalatest"     % "3.2.9"  % Test,
+        "org.pegdown" % "pegdown" % "1.6.0" % Test,
+        "com.vladsch.flexmark" % "flexmark-all" % "0.35.10"
       ),
       play26 = Seq(
         "com.typesafe.play"      %% "play-test"          % play26Version % Test,
@@ -46,11 +47,4 @@ object Dependencies {
     )
 
   def apply(): Seq[ModuleID] = compile ++ test
-
-  sealed abstract class Test(scope: String) {
-    val scalatestplusPlay = "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % scope
-    val scalaTest = "org.scalatest" %% "scalatest" % "3.0.5" % scope
-    val pegdown = "org.pegdown" % "pegdown" % "1.6.0" % scope
-  }
-
 }

@@ -16,17 +16,27 @@
 
 package play.api.mvc.hal
 
-import org.scalatest.{ FunSuite, Matchers }
-import play.api.http.{ HeaderNames, Status }
+import com.google.inject.Inject
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
+import play.api.http.{HeaderNames, Status}
 import play.api.libs.json.Json
-import play.api.mvc.{ Controller, Result }
-import play.api.test.{ DefaultAwaitTimeout, FakeRequest, ResultExtractors }
+import play.api.mvc.{AbstractController, ControllerComponents, Result}
+import play.api.test.{DefaultAwaitTimeout, FakeRequest, ResultExtractors}
+import play.mvc.Controller
 
 import scala.concurrent.Future
 
-class ControllerTest extends FunSuite with Matchers with ResultExtractors with HeaderNames with Status with DefaultAwaitTimeout {
+class ControllerTest extends AnyFunSuite
+  with Matchers
+  with ResultExtractors
+  with HeaderNames
+  with Status
+  with DefaultAwaitTimeout {
 
-  class TestController() extends Controller with HalWriteController
+  class TestController @Inject()(cc: ControllerComponents) extends AbstractController(cc) with HalWriteController
+
+
 
   test("A HAL Resource should be writeable") {
     val controller = new TestController()

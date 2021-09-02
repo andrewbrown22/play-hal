@@ -16,11 +16,12 @@
 
 package play.api.hal
 
-import org.scalatest.{ FunSuite, Matchers }
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 import play.api.hal.Hal._
 import play.api.libs.json.Json
 
-class TestHalConstruction extends FunSuite with Matchers {
+class TestHalConstruction extends AnyFunSuite with Matchers {
 
   case class TestData(total: Int, currency: String, status: String)
   implicit val testWrites = Json.writes[TestData]

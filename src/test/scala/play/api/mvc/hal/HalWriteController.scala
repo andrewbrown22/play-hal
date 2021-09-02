@@ -21,7 +21,7 @@ import play.api.libs.json.Json
 import play.api.mvc._
 
 trait HalWriteController {
-  this: Controller =>
+  this: AbstractController =>
 
   def hal = Action {
     Ok(Hal.state(Json.obj("foo" -> "bar")))
