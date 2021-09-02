@@ -23,7 +23,7 @@ import play.api.http.{HeaderNames, Status}
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents, Result}
 import play.api.test.{DefaultAwaitTimeout, FakeRequest, ResultExtractors}
-import play.mvc.Controller
+import play.test.Helpers.fakeApplication
 
 import scala.concurrent.Future
 
@@ -36,10 +36,10 @@ class ControllerTest extends AnyFunSuite
 
   class TestController @Inject()(cc: ControllerComponents) extends AbstractController(cc) with HalWriteController
 
-
+  val mockControllerComponents: ControllerComponents = Inject[ControllerComponents]
 
   test("A HAL Resource should be writeable") {
-    val controller = new TestController()
+    val controller = new TestController(mockControllerComponents)
     val result: Future[Result] = controller.hal().apply(FakeRequest())
     val bodyText: String = contentAsString(result)
     contentType(result) should equal(Some("application/hal+json"))
@@ -47,13 +47,13 @@ class ControllerTest extends AnyFunSuite
   }
 
   test("A Resource can be retrived as JSON") {
-    val controller = new TestController()
+    val controller = new TestController(mockControllerComponents)
     val result: Future[Result] = controller.halOrJson.apply(FakeRequest().withHeaders("Accept" -> "application/json"))
     contentType(result) should equal(Some("application/json"))
   }
 
   test("A Resource can be retrived as HAL") {
-    val controller = new TestController()
+    val controller = new TestController(mockControllerComponents)
     val result: Future[Result] = controller.halOrJson.apply(FakeRequest().withHeaders("Accept" -> "application/hal+json"))
     contentType(result) should equal(Some("application/hal+json"))
   }
